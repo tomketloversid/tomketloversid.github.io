@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Marks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+        h1 {
+            text-align: center;
+        }
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .session {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        footer {
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+        .footer-links ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .footer-links ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        .footer-links ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .footer-links ul li a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scroll Marks</h1>
+        <input type="text" id="walletAddress" placeholder="Enter wallet address">
+        <button onclick="getWalletPoints()">Check</button>
+        <div class="results" id="results"></div>
+    </div>
+    <footer>
+        <div class="footer-links">
+          <p>Follow TomketLovers on:</p>
+          <ul>
+            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+          </ul>
+        </div>
+    </footer>
+    <script>
+        async function getWalletPoints() {
+            const walletAddress = document.getElementById('walletAddress').value;
+            const url = `https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/scroll/wallet-points?walletAddress=${walletAddress}`;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+        
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+        
+                if (data && data.length > 0) {
+                    data.forEach(session => {
+                        const sessionDiv = document.createElement('div');
+                        sessionDiv.className = 'session';
+                        sessionDiv.innerHTML = `<strong>Marks:</strong> ${session.points} <br> <strong>Timestamp:</strong> ${new Date(session.timestamp * 1000).toLocaleString()}`;
+                        resultsDiv.appendChild(sessionDiv);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p>No data available for this wallet address.</p>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red;">Error fetching data: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
