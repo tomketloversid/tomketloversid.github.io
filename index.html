@@ -47,21 +47,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-y: auto; /* Enable scrolling inside the container */
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 20px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .grid-item {
+        .flex-container {
             display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
             justify-content: center;
             align-items: center;
+        }
+
+        .flex-item {
             background-color: #5f19c0;
             color: white;
             width: 400px;
@@ -69,35 +65,28 @@
             border-radius: 10px;
             font-size: 24px;
             font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             text-decoration: none;
             transition: background-color 0.3s;
         }
 
-        .grid-item:hover {
+        .flex-item:hover {
             background-color: #0056b3;
         }
 
         /* Media query for tablet screens */
         @media (max-width: 1024px) {
-            .grid-container {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-item {
-                width: 100%;
+            .flex-item {
                 width: 400px;
             }
         }
 
         /* Media query for mobile screens */
         @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-item {
-                width: 100%;
+            .flex-item {
                 width: 300px;
             }
         }
@@ -131,10 +120,10 @@
     </header>
 
     <main class="container">
-        <div class="grid-container">
-            <a href="/scroll-marks/index.html" class="grid-item">Scroll-Marks</a>
-            <a href="/x/index.html" class="grid-item">X</a>
-            <a href="/x/index.html" class="grid-item">X</a>
+        <div class="flex-container">
+            <a href="/scroll-marks/index.html" class="flex-item">Scroll-Marks</a>
+            <a href="/x/index.html" class="flex-item">X</a>
+            <a href="/x/index.html" class="flex-item">X</a>
         </div>
     </main>
 
