@@ -171,6 +171,7 @@
                 // Fetch market cap for NOT and DOGS
                 const mcapNot = await getMarketCap(notCoinUrl);
                 const mcapDogs = await getMarketCap(dogsCoinUrl);
+                const mcapPremarket = 250000000;
 
                 if (mcapNot && mcapDogs) {
                     // Calculate price per token and total value for both NOT and DOGS
@@ -180,20 +181,29 @@
                     const pricePerTokenDogs = mcapDogs / totalSupply;
                     const totalDollarsDogs = tokensOwned * pricePerTokenDogs;
 
+                    const pricePremarket = mcapPremarket / totalSupply;
+                    const totalDollarsPremarket = tokensOwned * pricePremarket;
+
                     // Display results
                     const resultsDiv = document.getElementById('results');
                     resultsDiv.innerHTML = `
                         <div class="session">
                             <strong>Hasil berdasarkan MCAP NOT</strong><br>
                             Market Cap NOT = $${mcapNot.toLocaleString()}<br>
-                            Harga per token = $${pricePerTokenNot.toFixed(6)}<br>
+                            Harga per token = $${pricePerTokenNot.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsNot.toFixed(2)}
                         </div>
                         <div class="session">
                             <strong>Hasil berdasarkan MCAP DOGS</strong><br>
                             Market Cap DOGS = $${mcapDogs.toLocaleString()}<br>
-                            Harga per token = $${pricePerTokenDogs.toFixed(6)}<br>
+                            Harga per token = $${pricePerTokenDogs.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsDogs.toFixed(2)}
+                        </div>
+                        <div class="session">
+                            <strong>Hasil berdasarkan Premarket</strong><br>
+                            Premarket = $${mcapPremarket.toLocaleString()}<br>
+                            Harga per token = $${pricePremarket.toFixed(2)}<br>
+                            Anda memiliki token senilai = $${totalDollarsPremarket.toFixed(2)}
                         </div>
                     `;
                 } else {
