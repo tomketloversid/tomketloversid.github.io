@@ -24,7 +24,7 @@
             text-align: center;
             font-size: 24px;
             border-radius: 5px;
-            flex-shrink: 0; /* Prevent header from shrinking */
+            flex-shrink: 0;
         }
 
         footer {
@@ -35,7 +35,11 @@
             text-align: center;
             font-size: 16px;
             border-radius: 5px;
-            flex-shrink: 0; /* Prevent footer from shrinking */
+            flex-shrink: 0;
+        }
+
+        footer p {
+            font-weight: lighter;
         }
 
         .container {
@@ -43,10 +47,24 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex-grow: 1; /* Allow container to take remaining space */
+            flex-grow: 1;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
         .flex-container {
@@ -74,6 +92,22 @@
         }
 
         .flex-item:hover {
+            background-color: #0056b3;
+        }
+
+        .load-more-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .load-more-btn:hover {
             background-color: #0056b3;
         }
 
@@ -115,30 +149,75 @@
 </head>
 <body>
 
-    <header>
-        TomketLovers
-    </header>
+<header>
+    TomketLovers
+</header>
 
-    <main class="container">
-        <div class="flex-container">
-            <a href="/scroll-marks/index.html" class="flex-item">scroll-marks</a>
-            <a href="/catizen-predictor/index.html" class="flex-item">catizen-predictor</a>
-            <a href="/meteora-points/index.html" class="flex-item">meteora-points</a>
-            <a href="/usual-calc/index.html" class="flex-item">usual-calc</a>
-            <a href="/usual-points/index.html" class="flex-item">usual-points</a>
-        </div>
-    </main>
+<main class="container">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Cari item..." oninput="filterItems()">
+    </div>
 
-    <footer>
-        <div class="footer-links">
-            <p>Follow TomketLovers on:</p>
-            <ul>
-                <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
-                <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
-                <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
-            </ul>
-        </div>
-    </footer>
+    <div id="flexContainer" class="flex-container">
+        <a href="/scroll-marks/index.html" class="flex-item">scroll-marks</a>
+        <a href="/catizen-predictor/index.html" class="flex-item">catizen-predictor</a>
+        <a href="/meteora-points/index.html" class="flex-item">meteora-points</a>
+        <a href="/usual-calc/index.html" class="flex-item">usual-calc</a>
+        <a href="/usual-points/index.html" class="flex-item">usual-points</a>
+    </div>
+
+    <button id="loadMoreBtn" class="load-more-btn" onclick="loadMore()">Selanjutnya</button>
+</main>
+
+<footer>
+    <div class="footer-links">
+        <p>Follow TomketLovers on:</p>
+        <ul>
+            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script>
+    // Fungsi untuk mencari item berdasarkan input pencarian
+    function filterItems() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.flex-item');
+        
+        items.forEach(item => {
+            if (item.textContent.toLowerCase().includes(searchInput)) {
+                item.style.display = "flex"; // Tampilkan item jika cocok
+            } else {
+                item.style.display = "none"; // Sembunyikan item jika tidak cocok
+            }
+        });
+    }
+
+    let currentIndex = 6;
+    const itemsPerPage = 6;
+
+    function loadMore() {
+        const items = document.querySelectorAll('.flex-item');
+        for (let i = currentIndex; i < currentIndex + itemsPerPage && i < items.length; i++) {
+            items[i].style.display = "flex";
+        }
+        currentIndex += itemsPerPage;
+
+        if (currentIndex >= items.length) {
+            document.getElementById('loadMoreBtn').style.display = 'none';
+        }
+    }
+
+    // Sembunyikan semua item setelah yang ke-9
+    window.onload = () => {
+        const items = document.querySelectorAll('.flex-item');
+        for (let i = itemsPerPage; i < items.length; i++) {
+            items[i].style.display = "none";
+        }
+    };
+</script>
 
 </body>
 </html>
