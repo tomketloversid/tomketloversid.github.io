@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catizen Predictor</title>
+    <title>Catizen Price Predictor</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -103,6 +103,7 @@
         .footer-links ul li a:hover {
             color: #007bff;
         }
+
         header {
             background-color: #5f19c0;
             font-weight: bold;
@@ -125,11 +126,10 @@
         <a href="https://tomketloversid.github.io/">TomketLovers</a>
     </header>
     <div class="container">
-        <h1>Catizen Predictor</h1>
-        <p>Ini prediksi pemghitungan dari xZen dan wCati (Masih ada kemungkinan keliru)</p>
-        <input type="number" id="xZenInput" placeholder="Masukkan nilai xZen">
-        <input type="number" id="wCatiInput" placeholder="Masukkan nilai wCati">
-        <button onclick="calculateValues()">Hitung</button>
+        <h1>Catizen Price Predictor</h1>
+        <p>Prediksi harga token Catizen berdasarkan MCAP token NOT dan DOGS</p>
+        <input type="number" id="tokenInput" placeholder="Masukkan jumlah token yang Anda miliki">
+        <button onclick="calculatePrice()">Hitung</button>
         <div class="results" id="results"></div>
     </div>
     <footer>
@@ -144,26 +144,63 @@
     </footer>
 
     <script>
-        function calculateValues() {
-            const xZen = parseFloat(document.getElementById('xZenInput').value);
-            const wCati = parseFloat(document.getElementById('wCatiInput').value);
-            const divider = 215.142;
+        // Total supply of Catizen token
+        const totalSupply = 305000000;
 
-            if (!isNaN(xZen) && !isNaN(wCati)) {
-                const xZenResult = xZen / divider;
-                const wCatiResult = wCati / divider;
-                const total = xZenResult + wCatiResult;
+        // API URLs for getting market cap data from CoinPaprika
+        const notCoinUrl = "https://api.coinpaprika.com/v1/tickers/not-notcoin";
+        const dogsCoinUrl = "https://api.coinpaprika.com/v1/tickers/dogs-dogs";
 
-                const resultsDiv = document.getElementById('results');
-                resultsDiv.innerHTML = `
-                    <div class="session">
-                        xZen = ${xZenResult.toFixed(3)} $CATI<br>
-                        wCati = ${wCatiResult.toFixed(3)} $CATI<br>
-                        Total = ${total.toFixed(3)} $CATI
-                    </div>
-                `;
+        // Function to get market cap for a specific coin
+        async function getMarketCap(url) {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.quotes.USD.market_cap;
+            } catch (error) {
+                console.error(`Error fetching market cap:`, error);
+                return null;  // Return null if there is an error
+            }
+        }
+
+        // Main function to calculate and display price predictions
+        async function calculatePrice() {
+            const tokensOwned = parseFloat(document.getElementById('tokenInput').value);
+
+            if (!isNaN(tokensOwned)) {
+                // Fetch market cap for NOT and DOGS
+                const mcapNot = await getMarketCap(notCoinUrl);
+                const mcapDogs = await getMarketCap(dogsCoinUrl);
+
+                if (mcapNot && mcapDogs) {
+                    // Calculate price per token and total value for both NOT and DOGS
+                    const pricePerTokenNot = mcapNot / totalSupply;
+                    const totalDollarsNot = tokensOwned * pricePerTokenNot;
+
+                    const pricePerTokenDogs = mcapDogs / totalSupply;
+                    const totalDollarsDogs = tokensOwned * pricePerTokenDogs;
+
+                    // Display results
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = `
+                        <div class="session">
+                            <strong>Hasil berdasarkan MCAP NOT</strong><br>
+                            Market Cap NOT = $${mcapNot.toLocaleString()}<br>
+                            Harga per token = $${pricePerTokenNot.toFixed(6)}<br>
+                            Anda memiliki token senilai = $${totalDollarsNot.toFixed(2)}
+                        </div>
+                        <div class="session">
+                            <strong>Hasil berdasarkan MCAP DOGS</strong><br>
+                            Market Cap DOGS = $${mcapDogs.toLocaleString()}<br>
+                            Harga per token = $${pricePerTokenDogs.toFixed(6)}<br>
+                            Anda memiliki token senilai = $${totalDollarsDogs.toFixed(2)}
+                        </div>
+                    `;
+                } else {
+                    alert('Gagal mengambil data market cap.');
+                }
             } else {
-                alert('Masukkan nilai yang valid untuk xZen dan wCati');
+                alert('Masukkan nilai yang valid untuk token');
             }
         }
     </script>
