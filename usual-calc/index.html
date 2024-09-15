@@ -178,14 +178,15 @@
             }
 
             const percentage = (myPills / totalPills) * 100;
-            const makerUsualTotal = percentage * makerUsual;
-            const curveUsualTotal = percentage * curveUsual;
-            const enaUsualTotal = percentage * enaUsual;
-            const tribeUsualTotal = percentage * tribeUsual;
-            const fxsUsualTotal = percentage * fxsUsual;
+            const makerUsualTotal = percentage / 100 * makerUsual;
+            const curveUsualTotal = percentage / 100 * curveUsual;
+            const enaUsualTotal = percentage / 100 * enaUsual;
+            const tribeUsualTotal = percentage / 100 * tribeUsual;
+            const fxsUsualTotal = percentage / 100 * fxsUsual;
             
             document.getElementById('result').innerHTML = `
                 <p>Your Pills Percentage: <strong>${percentage.toFixed(5)}%</strong></p>
+                <p>if using another tokenomics</p>
                 <p>if maker $usual: <strong>${makerUsualTotal.toLocaleString()} $usual</strong></p>
                 <p>if curve $usual: <strong>${curveUsualTotal.toLocaleString()} $usual</strong></p>
                 <p>if ena $usual: <strong>${enaUsualTotal.toLocaleString()} $usual</strong></p>
