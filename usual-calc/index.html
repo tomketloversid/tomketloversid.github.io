@@ -147,54 +147,54 @@
         </div>
     </footer>
 
-    <script>
-        async function fetchTotalPills() {
+<script>
+    async function fetchTotalPills() {
+        try {
             const response = await fetch('https://usual-six.vercel.app/api/fetchDune');
             const data = await response.json();
             return data.totalPills;
+        } catch (error) {
+            console.error('Error fetching total pills:', error);
+            document.getElementById('result').innerHTML = 'Error fetching total pills.';
+            return null;
+        }
+    }
+
+    async function calculateUsual() {
+        const totalPills = await fetchTotalPills();
+        if (!totalPills) return; // Exit if fetch failed
+
+        const myPills = parseFloat(document.getElementById('myPills').value);
+        
+        if (isNaN(myPills) || myPills <= 0) {
+            document.getElementById('result').innerHTML = 'Please enter a valid number of pills.';
+            return;
         }
 
-        async function calculateUsual() {
-            const totalPills = await fetchTotalPills();
-            const myPills = parseFloat(document.getElementById('myPills').value);
+        const tokens = [
+            { name: 'maker', supply: 1005577 },
+            { name: 'curve', supply: 3303030299 },
+            { name: 'ena', supply: 15000000000 },
+            { name: 'tribe', supply: 1000000000 },
+            { name: 'fxs', supply: 99681495 }
+        ];
 
-            const makerSupply = 1005577;
-            const curveSupply = 3303030299;
-            const enaSupply = 15000000000;
-            const tribeSupply = 1000000000;
-            const fxsSupply = 99681495;
-            
-            const percentageIt = 7.5 / 100; // 7.5%
-            
-            const makerUsual = makerSupply * percentageIt;
-            const curveUsual = curveSupply * percentageIt;
-            const enaUsual = enaSupply * percentageIt;
-            const tribeUsual = tribeSupply * percentageIt;
-            const fxsUsual = fxsSupply * percentageIt;
-            
-            if (isNaN(myPills) || myPills <= 0) {
-                document.getElementById('result').innerHTML = 'Please enter a valid number of pills.';
-                return;
-            }
+        const percentageIt = 7.5 / 100; // 7.5%
+        const percentage = (myPills / totalPills) * 100;
 
-            const percentage = (myPills / totalPills) * 100;
-            const makerUsualTotal = percentage / 100 * makerUsual;
-            const curveUsualTotal = percentage / 100 * curveUsual;
-            const enaUsualTotal = percentage / 100 * enaUsual;
-            const tribeUsualTotal = percentage / 100 * tribeUsual;
-            const fxsUsualTotal = percentage / 100 * fxsUsual;
-            
-            document.getElementById('result').innerHTML = `
-                <p>Your Pills Percentage: <strong>${percentage.toFixed(5)}%</strong></p>
-                <p>if using another tokenomics</p>
-                <p>if maker $usual: <strong>${makerUsualTotal.toLocaleString(0)} $usual</strong></p>
-                <p>if curve $usual: <strong>${curveUsualTotal.toLocaleString(0)} $usual</strong></p>
-                <p>if ena $usual: <strong>${enaUsualTotal.toLocaleString(0)} $usual</strong></p>
-                <p>if tribe $usual: <strong>${tribeUsualTotal.toLocaleString(0)} $usual</strong></p>
-                <p>if fxs $usual: <strong>${fxsUsualTotal.toLocaleString(0)} $usual</strong></p>
-                `;
-        }
-    </script>
+        let resultHTML = `<p>Your Pills Percentage: <strong>${percentage.toFixed(5)}%</strong></p>`;
+        resultHTML += `<p>if using another tokenomics</p>`;
+
+        tokens.forEach(token => {
+            const tokenUsual = token.supply * percentageIt;
+            const tokenUsualTotal = Math.round((percentage / 100) * tokenUsual);
+            resultHTML += `<p>if ${token.name} $usual: <strong>${tokenUsualTotal.toLocaleString(0)} $usual</strong></p>`;
+        });
+
+        document.getElementById('result').innerHTML = resultHTML;
+    }
+</script>
+
 
 </body>
 </html>
