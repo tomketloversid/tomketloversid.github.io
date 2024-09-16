@@ -147,9 +147,10 @@
         // Total supply of Catizen token
         const totalSupply = 305000000;
 
-        // API URLs for getting market cap data from CoinPaprika
+        // API URLs for getting market cap data from CoinPaprika and lastPrice
         const notCoinUrl = "https://api.coinpaprika.com/v1/tickers/not-notcoin";
         const dogsCoinUrl = "https://api.coinpaprika.com/v1/tickers/dogs-dogs";
+        const premarketUrl = "https://cati-last-price-api.vercel.app/api/lastPrice";
 
         // Function to get market cap for a specific coin
         async function getMarketCap(url) {
@@ -163,17 +164,29 @@
             }
         }
 
+        // Function to get lastPrice from premarket API
+        async function getPremarketPrice(url) {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return parseFloat(data.result.lastPrice);  // return lastPrice as float
+            } catch (error) {
+                console.error(`Error fetching premarket price:`, error);
+                return null;  // Return null if there is an error
+            }
+        }
+
         // Main function to calculate and display price predictions
         async function calculatePrice() {
             const tokensOwned = parseFloat(document.getElementById('tokenInput').value);
 
             if (!isNaN(tokensOwned)) {
-                // Fetch market cap for NOT and DOGS
+                // Fetch market cap for NOT, DOGS and premarket price
                 const mcapNot = await getMarketCap(notCoinUrl);
                 const mcapDogs = await getMarketCap(dogsCoinUrl);
-                const mcapPremarket = 250000000;
+                const lastPricePremarket = await getPremarketPrice(premarketUrl);
 
-                if (mcapNot && mcapDogs) {
+                if (mcapNot && mcapDogs && lastPricePremarket) {
                     // Calculate price per token and total value for both NOT and DOGS
                     const pricePerTokenNot = mcapNot / totalSupply;
                     const totalDollarsNot = tokensOwned * pricePerTokenNot;
@@ -181,8 +194,9 @@
                     const pricePerTokenDogs = mcapDogs / totalSupply;
                     const totalDollarsDogs = tokensOwned * pricePerTokenDogs;
 
-                    const pricePremarket = mcapPremarket / totalSupply;
-                    const totalDollarsPremarket = tokensOwned * pricePremarket;
+                    // Calculate total value using premarket lastPrice
+                    const marketcapPremarket = lastPricePremarket * totalSupply;
+                    const totalDollarsPremarket = tokensOwned * lastPricePremarket;
 
                     // Display results
                     const resultsDiv = document.getElementById('results');
@@ -201,13 +215,13 @@
                         </div>
                         <div class="session">
                             <strong>Hasil berdasarkan Premarket</strong><br>
-                            Premarket = $${mcapPremarket.toLocaleString()}<br>
-                            Harga per token = $${pricePremarket.toFixed(2)}<br>
+                            Market Cap DOGS = $${marketcapPremarket.toLocaleString()}<br>
+                            Harga per token berdasarkan Premarket = $${lastPricePremarket.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsPremarket.toFixed(2)}
                         </div>
                     `;
                 } else {
-                    alert('Gagal mengambil data market cap.');
+                    alert('Gagal mengambil data market cap atau premarket.');
                 }
             } else {
                 alert('Masukkan nilai yang valid untuk token');
