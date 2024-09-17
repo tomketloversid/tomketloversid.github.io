@@ -127,7 +127,7 @@
     </header>
     <div class="container">
         <h1>Catizen Price Predictor</h1>
-        <p>Prediksi harga token Catizen berdasarkan MCAP token NOT, DOGS dan Premarket</p>
+        <p>Prediksi harga token Catizen berdasarkan MCAP token NOT dan DOGS</p>
         <input type="number" id="tokenInput" placeholder="Masukkan jumlah token yang Anda miliki">
         <button onclick="calculatePrice()">Hitung</button>
         <div class="results" id="results"></div>
@@ -146,6 +146,7 @@
     <script>
         // Total supply of Catizen token
         const totalSupply = 305000000;
+        const fdv = 1000000000;
 
         // API URLs for getting market cap data from CoinPaprika and lastPrice
         const notCoinUrl = "https://api.coinpaprika.com/v1/tickers/not-notcoin";
@@ -198,24 +199,32 @@
                     const marketcapPremarket = lastPricePremarket * totalSupply;
                     const totalDollarsPremarket = tokensOwned * lastPricePremarket;
 
+                    // FDV
+                    const notFdv = Math.round(pricePerTokenNot * fdv);
+                    const dogsFdv = Math.round(pricePerTokenDogs * fdv);
+                    const premarketFdv = Math.round(lastPricePremarket * fdv);
+
                     // Display results
                     const resultsDiv = document.getElementById('results');
                     resultsDiv.innerHTML = `
                         <div class="session">
                             <strong>Hasil berdasarkan MCAP NOT</strong><br>
                             Market Cap NOT = $${mcapNot.toLocaleString()}<br>
+                            FDV NOT = $${notFdv.toLocaleString()}<br>
                             Harga per token = $${pricePerTokenNot.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsNot.toFixed(2)}
                         </div>
                         <div class="session">
                             <strong>Hasil berdasarkan MCAP DOGS</strong><br>
                             Market Cap DOGS = $${mcapDogs.toLocaleString()}<br>
+                            FDV DOGS = $${dogsFdv.toLocaleString()}<br>
                             Harga per token = $${pricePerTokenDogs.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsDogs.toFixed(2)}
                         </div>
                         <div class="session">
                             <strong>Hasil berdasarkan Premarket</strong><br>
                             Market Cap DOGS = $${marketcapPremarket.toLocaleString()}<br>
+                            FDV DOGS = $${premarketFdv.toLocaleString()}<br>
                             Harga per token berdasarkan Premarket = $${lastPricePremarket.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsPremarket.toFixed(2)}
                         </div>
