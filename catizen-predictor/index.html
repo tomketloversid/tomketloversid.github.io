@@ -127,7 +127,7 @@
     </header>
     <div class="container">
         <h1>Catizen Price Predictor</h1>
-        <p>Prediksi harga token Catizen berdasarkan MCAP token NOT dan DOGS</p>
+        <p>Prediksi harga token Catizen berdasarkan MCAP dan FDV token NOT, DOGS dan Premarket</p>
         <input type="number" id="tokenInput" placeholder="Masukkan jumlah token yang Anda miliki">
         <button onclick="calculatePrice()">Hitung</button>
         <div class="results" id="results"></div>
@@ -223,9 +223,9 @@
                         </div>
                         <div class="session">
                             <strong>Hasil berdasarkan Premarket</strong><br>
-                            Market Cap DOGS = $${marketcapPremarket.toLocaleString()}<br>
-                            FDV DOGS = $${premarketFdv.toLocaleString()}<br>
-                            Harga per token berdasarkan Premarket = $${lastPricePremarket.toFixed(2)}<br>
+                            Market Cap Premarket = $${marketcapPremarket.toLocaleString()}<br>
+                            FDV Premarket = $${premarketFdv.toLocaleString()}<br>
+                            Harga per token = $${lastPricePremarket.toFixed(2)}<br>
                             Anda memiliki token senilai = $${totalDollarsPremarket.toFixed(2)}
                         </div>
                     `;
