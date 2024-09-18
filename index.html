@@ -103,7 +103,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            display: block;
+            display: none; /* Awalnya disembunyikan */
             margin: 20px auto;
         }
 
@@ -209,11 +209,21 @@
         }
     }
 
-    // Sembunyikan semua item setelah yang ke-9
+    // Sembunyikan semua item setelah yang ke-6 dan periksa apakah ada lebih dari 6 item
     window.onload = () => {
         const items = document.querySelectorAll('.flex-item');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        // Sembunyikan semua item setelah yang ke-6
         for (let i = itemsPerPage; i < items.length; i++) {
             items[i].style.display = "none";
+        }
+
+        // Tampilkan tombol "Selanjutnya" hanya jika jumlah item lebih dari 6
+        if (items.length > itemsPerPage) {
+            loadMoreBtn.style.display = 'block';
+        } else {
+            loadMoreBtn.style.display = 'none';
         }
     };
 </script>
