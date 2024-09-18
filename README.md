@@ -10,7 +10,7 @@ Welcome to the **tomketloversid.github.io** website! This tool is designed to as
   
 ## How to Use
 
-1. Navigate to the website: [Tomket Lovers ID Airdrop Checker](https://tomketloversid.github.io/)
+1. Navigate to the website: [Tomket Lovers ID](https://tomketloversid.github.io/)
 2. Search for the airdrop project you're interested in.
    
 ## Contributions
