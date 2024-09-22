@@ -197,13 +197,13 @@
                     const totalDollarsCati = tokensOwned * pricePerTokenCati;
 
                     // Calculate total value using premarket lastPrice
-                    const marketcapPremarket = lastPricePremarket * totalSupply;
-                    const totalDollarsPremarket = tokensOwned * lastPricePremarket;
+                    const marketcapPremarket = lastPricePremarket * totalSupply / 10;
+                    const totalDollarsPremarket = tokensOwned * lastPricePremarket / 10;
 
                     // FDV
                     const dogsFdv = Math.round(pricePerTokenDogs * fdv);
                     const catiFdv = Math.round(pricePerTokenCati * fdv);
-                    const premarketFdv = Math.round(lastPricePremarket * fdv);
+                    const premarketFdv = Math.round(lastPricePremarket * fdv / 10);
 
                     // Display results
                     const resultsDiv = document.getElementById('results');
