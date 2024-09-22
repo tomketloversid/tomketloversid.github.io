@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APR Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80vw;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5f19c0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 60%;
+            padding: 10px;
+            background-color: #5f19c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .session {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        footer {
+            background-color: #5f19c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .footer-links ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .footer-links ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .footer-links ul li a:hover {
+            color: #007bff;
+        }
+
+        header {
+            background-color: #5f19c0;
+            font-weight: bold;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 5px;
+            flex-shrink: 0; /* Prevent header from shrinking */
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .form-group {
+            width: 60%;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body> 
+    <header>
+        <a href="https://tomketloversid.github.io/">TomketLovers</a>
+    </header> 
+
+    <div class="container">
+        <h1>APR Calculator</h1>
+        <div class="form-group">
+            <label for="principal">Jumlah Modal ($):</label>
+            <input type="number" id="principal" placeholder="Masukkan jumlah modal">
+        </div>
+        <div class="form-group">
+            <label for="days">Waktu (hari):</label>
+            <input type="number" id="days" placeholder="Masukkan waktu dalam hari">
+        </div>
+        <div class="form-group">
+            <label for="apr">Persentase APR (%):</label>
+            <input type="number" id="apr" placeholder="Masukkan persentase APR">
+        </div>
+        <button class="btn" onclick="calculateAPR()">Hitung</button>
+        <div class="result" id="result">
+            <!-- Hasil akan ditampilkan di sini -->
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+          <p>Follow TomketLovers on:</p>
+          <ul>
+            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+          </ul>
+        </div>
+    </footer>
+
+    <script>
+        function calculateAPR() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const days = parseInt(document.getElementById('days').value);
+            const apr = parseFloat(document.getElementById('apr').value);
+
+            if (isNaN(principal) || isNaN(days) || isNaN(apr)) {
+                document.getElementById('result').innerHTML = "Harap masukkan semua nilai dengan benar.";
+                return;
+            }
+
+            const dailyInterestRate = apr / 100 / 365;
+            const interest = principal * dailyInterestRate * days;
+            const total = principal + interest;
+
+            document.getElementById('result').innerHTML = `
+                <div class="session">
+                <p><b>Bunga yang dihasilkan:</b> $${interest.toFixed(2)}</p>
+                <p><b>Total jumlah setelah ${days} hari:</b> $${total.toFixed(2)}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
