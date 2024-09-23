@@ -206,6 +206,8 @@
                     const catiFdv = Math.round(pricePerTokenCati * fdv);
                     const premarketFdv = Math.round(lastPricePremarket * fdv / 10);
 
+                    const bagiPremarket = lastPricePremarket / 10 ;
+
                     // Display results
                     const resultsDiv = document.getElementById('results');
                     resultsDiv.innerHTML = `
@@ -227,7 +229,7 @@
                             <strong>Hasil berdasarkan Premarket</strong><br>
                             Market Cap Premarket = $${marketcapPremarket.toLocaleString()}<br>
                             FDV Premarket = $${premarketFdv.toLocaleString()}<br>
-                            Harga per token = $${lastPricePremarket.toFixed(4)}<br>
+                            Harga per token = $${bagiPremarket.toFixed(4)}<br>
                             Anda memiliki token senilai = $${totalDollarsPremarket.toFixed(3)}
                         </div>
                     `;
