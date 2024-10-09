@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="0; url=/scroll-marks/">
     <title>Scroll Marks</title>
     <style>
         body {
@@ -17,6 +16,7 @@
 
         .container {
             width: 80vw;
+            
             margin: auto;
             background-color: #fff;
             padding: 20px;
@@ -55,15 +55,17 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #4a148c;
         }
 
         .results {
             width: 100%;
             margin-top: 20px;
+            display: none;
         }
 
         .session {
@@ -104,6 +106,7 @@
         .footer-links ul li a:hover {
             color: #007bff;
         }
+
         header {
             background-color: #5f19c0;
             font-weight: bold;
@@ -112,7 +115,7 @@
             text-align: center;
             font-size: 24px;
             border-radius: 5px;
-            flex-shrink: 0; /* Prevent header from shrinking */
+            flex-shrink: 0;
         }
 
         header a {
@@ -125,47 +128,128 @@
     <header>
         <a href="https://tomketloversid.github.io/">TomketLovers</a>
     </header>
+
     <div class="container">
-        <h1>Scroll Marks</h1>
-        <input type="text" id="walletAddress" placeholder="Enter wallet address">
-        <button onclick="getWalletPoints()">Check</button>
-        <div class="results" id="results"></div>
+        <h1>Konversi Marks dan Perbandingan Harga Scroll</h1>
+        <input type="text" id="walletAddress" placeholder="Contoh: 0x123456789">
+        <button onclick="convertAndPredict()">Lihat Hasil</button>
+
+        <div class="results session">
+            <p id="marksResult">Marks: </p>
+            <p id="scrollResult">Scroll: </p>
+            <h3>Prediksi Harga:</h3>
+            <!-- <p id="pricePredictionStrk">Total yang di dapatkan jika FDV STRK: </p> -->
+            <!-- <p id="pricePredictionZksync">Total yang di dapatkan jika FDV zkSync: </p> -->
+            <p id="pricePredictionMcapStrk">Total yang di dapatkan jika mcap STRK: </p>
+            <p id="pricePredictionMcapZksync">Total yang di dapatkan jika mcap zkSync: </p>
+        </div>
     </div>
+
     <footer>
         <div class="footer-links">
-          <p>Follow TomketLovers on:</p>
-          <ul>
-            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
-            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
-            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
-          </ul>
+            <p>Follow TomketLovers on:</p>
+            <ul>
+                <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+                <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+                <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+            </ul>
         </div>
     </footer>
+
     <script>
-        async function getWalletPoints() {
-            const walletAddress = document.getElementById('walletAddress').value;
-            const url = `https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/scroll/wallet-points?walletAddress=${walletAddress}`;
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '';
-        
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-        
-                if (data && data.length > 0) {
-                    data.forEach(session => {
-                        const sessionDiv = document.createElement('div');
-                        sessionDiv.className = 'session';
-                        sessionDiv.innerHTML = `<strong>Marks:</strong> ${session.points} <br> <strong>Timestamp:</strong> ${new Date(session.timestamp * 1000).toLocaleString()}`;
-                        resultsDiv.appendChild(sessionDiv);
-                    });
-                } else {
-                    resultsDiv.innerHTML = '<p>No data available for this wallet address.</p>';
-                }
-            } catch (error) {
-                resultsDiv.innerHTML = `<p style="color: red;">Error fetching data: ${error.message}</p>`;
-            }
+    async function convertAndPredict() {
+        const walletAddress = document.getElementById("walletAddress").value.trim();
+        if (!walletAddress) {
+            alert("Masukkan alamat wallet yang valid.");
+            return;
         }
+        const apiUrl = `https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/scroll/wallet-points?walletAddress=${walletAddress}`;
+        const totalScrollSupply = 1000000000; // Total supply scroll 1B
+        const totalScroll = 70000000; // Jumlah total scroll 70M
+        const coinApiUrl = "https://api.coinpaprika.com/v1/tickers/";
+
+        try {
+            // Ambil data dari API wallet untuk marks
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error("Gagal mengambil data dari API wallet.");
+            }
+            const data = await response.json();
+
+            if (data && data.length > 0 && data[0].points !== undefined) {
+                const marks = data[0].points;
+                const scrollPerMarks = totalScroll / totalScrollSupply; // 70M/1B = 0.07
+                const equivalentScroll = marks * scrollPerMarks;
+
+                // Tampilkan hasil konversi marks ke scroll
+                document.getElementById("marksResult").textContent = `Marks: ${marks.toFixed(2)}`;
+                document.getElementById("scrollResult").textContent = `Scroll: ${equivalentScroll.toFixed(2)}`;
+
+                // Ambil data dari Coinpaprika untuk STRK dan zkSync
+                const [strkResponse, zksyncResponse] = await Promise.all([
+                    fetch(`${coinApiUrl}strk-starknet`),
+                    fetch(`${coinApiUrl}zk-zksync`)
+                ]);
+
+                if (!strkResponse.ok || !zksyncResponse.ok) {
+                    throw new Error("Gagal mengambil data dari API Coinpaprika.");
+                }
+
+                const strkData = await strkResponse.json();
+                const zksyncData = await zksyncResponse.json();
+
+                if (strkData && zksyncData) {
+                    // Menghitung FDV menggunakan harga dan total suplai
+                    const fdvStrk = strkData.quotes.USD.price * strkData.total_supply;
+                    const fdvZksync = zksyncData.quotes.USD.price * zksyncData.total_supply;
+                    
+                    // Menghitung Market Cap
+                    const mcapStrk = strkData.quotes.USD.market_cap;
+                    const mcapZksync = zksyncData.quotes.USD.market_cap;
+
+                    // Menghitung prediksi harga token menggunakan FDV
+                    const predictedPriceStrk = equivalentScroll * (fdvStrk / totalScrollSupply);
+                    const predictedPriceZksync = equivalentScroll * (fdvZksync / totalScrollSupply);
+
+                    // Menghitung prediksi harga token menggunakan Market Cap
+                    const predictedPriceMcapStrk = equivalentScroll * (mcapStrk / 190000000);
+                    const predictedPriceMcapZksync = equivalentScroll * (mcapZksync / 190000000);
+
+                    const predictedPriceMcapStrkToken = 1 * (mcapStrk / 190000000);
+                    const predictedPriceMcapZksyncToken = 1 * (mcapZksync / 190000000);
+
+                    // Menghitung prediksi harga token per unit
+                    const predictedPriceStrkToken = 1 * (fdvStrk / totalScrollSupply);
+                    const predictedPriceZksyncToken = 1 * (fdvZksync / totalScrollSupply);
+
+                    // Tampilkan prediksi harga token
+                    //document.getElementById("pricePredictionStrk").innerHTML = 
+                        `Harga jika menggunakan FDV STRK $${predictedPriceStrkToken.toFixed(2)}</br>Total yang di dapatkan jika FDV STRK: $${predictedPriceStrk.toFixed(2)}`;
+                    //document.getElementById("pricePredictionZksync").innerHTML = 
+                        `Harga jika menggunakan FDV ZK $${predictedPriceZksyncToken.toFixed(2)}</br>Total yang di dapatkan jika FDV zkSync: $${predictedPriceZksync.toFixed(2)}`;
+                    document.getElementById("pricePredictionMcapStrk").innerHTML = 
+                        `Harga jika menggunakan Mcap STRK $${predictedPriceMcapStrkToken.toFixed(2)}</br>Total yang di dapatkan jika mcap STRK: $${predictedPriceMcapStrk.toFixed(2)}`;
+                    document.getElementById("pricePredictionMcapZksync").innerHTML = 
+                        `Harga jika menggunakan Mcap ZK $${predictedPriceMcapZksyncToken.toFixed(2)}</br>Total yang di dapatkan jika mcap zkSync: $${predictedPriceMcapZksync.toFixed(2)}`;
+                }
+
+                // Tampilkan hasil
+                document.querySelector(".results").style.display = "block";
+            } else {
+                throw new Error("Data tidak ditemukan atau wallet address tidak valid.");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            alert("Terjadi kesalahan: " + error.message);
+            document.getElementById("marksResult").textContent = "Marks: Tidak dapat dihitung.";
+            document.getElementById("scrollResult").textContent = "Scroll: Tidak dapat dihitung.";
+            document.getElementById("pricePredictionStrk").textContent = "Jika menggunakan STRK: Tidak dapat dihitung.";
+            document.getElementById("pricePredictionZksync").textContent = "Jika menggunakan zkSync: Tidak dapat dihitung.";
+            document.getElementById("pricePredictionMcapStrk").textContent = "Jika menggunakan mcap STRK: Tidak dapat dihitung.";
+            document.getElementById("pricePredictionMcapZksync").textContent = "Jika menggunakan mcap zkSync: Tidak dapat dihitung.";
+            document.querySelector(".results").style.display = "block";
+        }
+    }
     </script>
 </body>
 </html>
