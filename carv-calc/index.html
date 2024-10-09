@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konversi Soul ke Carv</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80vw;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5f19c0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80vw;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5f19c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            display: none;
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        footer {
+            background-color: #5f19c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .footer-links ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .footer-links ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .footer-links ul li a:hover {
+            color: #007bff;
+        }
+
+        header {
+            background-color: #5f19c0;
+            font-weight: bold;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="https://tomketloversid.github.io/">TomketLovers</a>
+    </header>
+
+    <div class="container">
+        <h1>Konversi Soul ke Carv</h1>
+
+        <form id="conversionForm">
+            <input type="number" id="soul" name="soul" min="0" step="any" placeholder="Masukkan jumlah Soul" required>
+            <button type="submit">Konversi</button>
+        </form>
+
+        <div id="resultContainer" class="result">
+            <p id="carvResult"></p>
+            <p id="priceResult"></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <p>Follow TomketLovers on:</p>
+            <ul>
+                <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+                <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+                <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        const apiUrl = "https://carv-api.vercel.app/api";
+
+        async function fetchCarvData() {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            return data;
+        }
+
+        function convertSoulToCarv(soulAmount, totalCarv) {
+            const carvRatio = totalCarv / 40000000; // 40 juta Carv
+            return soulAmount / carvRatio;
+        }
+
+        document.getElementById("conversionForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            
+            const soulAmount = parseFloat(document.getElementById("soul").value);
+            const carvData = await fetchCarvData();
+            const totalCarv = parseFloat(carvData.total);
+            const lastPrice = parseFloat(carvData.lastPrice);
+            
+            const carvAmount = convertSoulToCarv(soulAmount, totalCarv);
+            const totalPrice = carvAmount * lastPrice;
+
+            document.getElementById("carvResult").innerText = `Hasil Soul -> CARV : ${carvAmount.toFixed(2)} CARV`;
+            document.getElementById("priceResult").innerHTML = `
+            Harga Premarket: $${lastPrice}
+            </br>
+            </br>
+            Total Perkiraan: $${totalPrice.toFixed(2)}`;
+
+            // Tampilkan hasil setelah tombol diklik
+            document.getElementById("resultContainer").style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
