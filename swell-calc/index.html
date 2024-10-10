@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swell Calc</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FL42J6SMKN');
+</script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80vw;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5f19c0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80vw;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5f19c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            width: 80vw;
+            margin-top: 20px;
+        }
+
+        .session {
+            display: none;
+            margin-top: 10px;
+            width: 80vw;    
+            padding: 15px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        footer {
+            background-color: #5f19c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .footer-links ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .footer-links ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .footer-links ul li a:hover {
+            color: #007bff;
+        }
+
+        header {
+            background-color: #5f19c0;
+            font-weight: bold;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 5px;
+            flex-shrink: 0; /* Prevent header from shrinking */
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="https://tomketloversid.github.io/">TomketLovers</a>
+    </header>
+
+    <div class="container">
+        <h1>Swell Calc</h1>
+        <form id="airdropForm">
+            <input type="text" id="wallet" name="wallet" required placeholder="Enter Wallet Address">
+            <button type="submit">Calc</button>
+        </form>
+
+        <div class="session result" display="none">
+            <h2>Results:</h2>
+            <p id="pearl">Pearl: </p>
+            <p id="swell">Swell: </p>
+    
+            <h2>Price Prediction:</h2>
+            <p id="predictedSwellEtherFi">Predicted Swell (EtherFi): </p>
+            <p id="totalPredictedSwellEtherFi">Total Predicted Swell (EtherFi): </p>
+            <p id="predictedSwellRenzo">Predicted Swell (Renzo): </p>
+            <p id="totalPredictedSwellRenzo">Total Predicted Swell (Renzo): </p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <p>Follow TomketLovers on:</p>
+            <ul>
+                <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+                <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+                <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        const initSwell = 850000000; // Initial Swell value
+        let swellAmount = 0; // Variable to store the swell amount
+
+        // Combined function to handle both airdrop check and price prediction
+        document.getElementById('airdropForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const walletAddress = document.getElementById('wallet').value;
+            const airdropApiUrl = `https://v3-lrt.svc.swellnetwork.io/swell.v3.WalletService/AirdropChecker?connect=v1&encoding=json&message=${encodeURIComponent(JSON.stringify({ walletAddress }))}`;
+
+            // Fetch airdrop data
+            fetch(airdropApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const totalAmount = parseFloat(data.totalAmount) / 1e18;
+                    const pearlAmount = data.pearlAmount;
+
+                    swellAmount = totalAmount; // Save swell amount for further calculations
+
+                    // Display airdrop results
+                    document.getElementById('pearl').textContent = `Pearl: ${pearlAmount.toFixed(0)}`;
+                    document.getElementById('swell').textContent = `Swell: ${totalAmount.toFixed(0)}`;
+
+                    // Fetch price prediction after getting swell amount
+                    const etherfiMcapUrl = 'https://api.coinpaprika.com/v1/tickers/ethfi-etherfi'; // Example EtherFi Coin ID
+                    const renzoMcapUrl = 'https://api.coinpaprika.com/v1/tickers/rez-renzo'; // Example Renzo Coin ID
+
+                    // Fetch EtherFi and Renzo Market Caps
+                    return Promise.all([
+                        fetch(etherfiMcapUrl).then(response => response.json()),
+                        fetch(renzoMcapUrl).then(response => response.json())
+                    ]);
+                })
+                .then(([etherfiData, renzoData]) => {
+                    const etherfiPrice = etherfiData.quotes.USD.price;
+                    const renzoMcap = renzoData.quotes.USD.market_cap;
+
+                    const etherfiCirc = 190051505;
+
+                    // Calculate predicted prices
+                    const predictedSwellEtherFi = (etherfiPrice * etherfiCirc) / initSwell;
+                    const predictedSwellRenzo = renzoMcap / initSwell;
+
+                    // Calculate total predicted swell values
+                    const totalPredictedSwellEtherFi = swellAmount * predictedSwellEtherFi;
+                    const totalPredictedSwellRenzo = swellAmount * predictedSwellRenzo;
+
+                    // Display predicted prices and total values
+                    document.querySelector('.session').style.display = 'block';
+                    document.getElementById('predictedSwellEtherFi').textContent = `Predicted Swell (EtherFi): $${predictedSwellEtherFi.toFixed(6)}`;
+                    document.getElementById('totalPredictedSwellEtherFi').textContent = `Total Predicted Swell (EtherFi): $${totalPredictedSwellEtherFi.toFixed(2)}`;
+                    document.getElementById('predictedSwellRenzo').textContent = `Predicted Swell (Renzo): $${predictedSwellRenzo.toFixed(6)}`;
+                    document.getElementById('totalPredictedSwellRenzo').textContent = `Total Predicted Swell (Renzo): $${totalPredictedSwellRenzo.toFixed(2)}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to fetch data. Please try again.');
+                });
+        });
+    </script>
+</body>
+</html>
