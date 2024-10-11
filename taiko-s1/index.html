@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAIKO Trailblazer S1</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FL42J6SMKN');
+</script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80vw;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5f19c0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5f19c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .session {
+            padding: 15px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        footer {
+            background-color: #5f19c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .footer-links ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .footer-links ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .footer-links ul li a:hover {
+            color: #007bff;
+        }
+
+        header {
+            background-color: #5f19c0;
+            font-weight: bold;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="https://tomketloversid.github.io/">TomketLovers</a>
+    </header>
+
+    <div class="container">
+        <h1>TAIKO Trailblazer S1</h1>
+        <input type="text" id="walletAddress" placeholder="Enter wallet address" />
+        <button onclick="fetchTaiko()">Check Token</button>
+        <div class="results" id="results"></div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <p>Follow TomketLovers on:</p>
+            <ul>
+                <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
+                <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
+                <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        function fetchTaiko() {
+            const walletAddress = document.getElementById('walletAddress').value;
+            const url = `https://trailblazer.mainnet.taiko.xyz/claim/proof?address=${walletAddress}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const taikoValue = data.value || "0";
+                    document.getElementById('results').innerHTML = `<div class="session">Your Token: ${taikoValue} TAIKO</div>`;
+                })
+                .catch(error => {
+                    document.getElementById('results').innerHTML = `<div class="session">Error fetching token data</div>`;
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>
