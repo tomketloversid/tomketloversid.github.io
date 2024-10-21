@@ -3,247 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>TomketLovers</title>
+    <title>TomketLovers Airdrop Checker</title>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-FL42J6SMKN');
-</script>
+    gtag('config', 'G-FL42J6SMKN');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Memastikan font Inter digunakan */
+            background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        header {
-            background-color: #5f19c0;
-            font-weight: bold;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            border-radius: 5px;
-            flex-shrink: 0;
-        }
-
-        footer {
-            background-color: #5f19c0;
-            font-weight: bold;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 16px;
-            border-radius: 5px;
-            flex-shrink: 0;
-        }
-
-        footer p {
-            font-weight: lighter;
+            min-height: 100vh; /* Membuat tubuh penuh satu layar */
         }
 
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex-grow: 1;
+            text-align: center;
+            flex: 1; /* Memungkinkan kontainer mengambil ruang yang tersedia */
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center; /* Menyelaraskan konten di tengah secara vertikal */
+            padding: 20px;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
         }
 
         .search-bar {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            width: 60%;
+            border: 1px solid #ccc;
+        }
+
+        .search-button {
+            padding: 10px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tab-switch {
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .checker-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .checker-card {
+            background-color: #ccc;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 10px 10px 0 #000;
+            cursor: pointer;
+            width: 180px;
             text-align: center;
         }
 
-        .search-bar input[type="text"] {
-            padding: 10px;
-            width: 80%;
-            max-width: 400px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+        .more-button {
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: bolder;
+            padding: 10px 20px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
         }
 
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            font-size: 24px; /* Sesuaikan ukuran ikon */
+            color: #fff; /* Warna ikon */
+            cursor: pointer;
+        }
+
+        /* Flex container */
         .flex-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
             justify-content: center;
-            align-items: center;
+            margin-bottom: 20px;
         }
 
         .flex-item {
-            background-color: #5f19c0;
-            color: white;
-            width: 400px;
-            height: 200px;
-            border-radius: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .flex-item:hover {
-            background-color: #0056b3;
-        }
-
-        .load-more-btn {
-            background-color: #5f19c0;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+            background-color: #ccc;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 5px 5px 0 #000;
             cursor: pointer;
-            font-size: 16px;
-            display: none; /* Awalnya disembunyikan */
-            margin: 20px auto;
-        }
-
-        .load-more-btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* Media query for tablet screens */
-        @media (max-width: 1024px) {
-            .flex-item {
-                width: 400px;
-            }
-        }
-
-        /* Media query for mobile screens */
-        @media (max-width: 768px) {
-            .flex-item {
-                width: 300px;
-            }
-        }
-
-        .footer-links ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .footer-links ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-
-        .footer-links ul li a {
             text-decoration: none;
-            color: white;
-            font-weight: bold;
+            color: black;
         }
-
-        .footer-links ul li a:hover {
-            color: #007bff;
-        }
-
     </style>
 </head>
 <body>
 
-<header>
-    TomketLovers
-</header>
+    <div class="container">
+        <h1>TOMKETLOVERS</h1>
+        <h2>AIRDROP CHECKER</h2>
 
-<main class="container">
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Cari item..." oninput="filterItems()">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="What airdrop do you want to check today?">
+            <button class="search-button" onclick="searchAirdrop()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="tab-switch">
+            <button class="tab-button active" onclick="switchTab('live')">LIVE</button>
+            <button class="tab-button" onclick="switchTab('listed')">LISTED</button>
+        </div>
+
+        <!-- Flex Container -->
+        <div id="flexContainer" class="flex-container">
+            <a href="/scroll-predictor/" class="flex-item live">scroll-predictor</a>
+            <a href="/catizen-predictor/" class="flex-item listed">catizen-predictor</a>
+            <a href="/meteora-points/" class="flex-item live">meteora-points</a>
+            <a href="/usual-points-calc/" class="flex-item live">usual-points-calc</a>
+            <a href="/hamster-predictor/" class="flex-item listed">hamster-predictor</a>
+            <a href="/apr-calculator/" class="flex-item live">apr-calculator</a>
+            <a href="/eigen-predictor/" class="flex-item listed" style="display: none;">eigen-predictor</a>
+            <a href="/linea-lxp/" class="flex-item live" style="display: none;">linea-lxp</a>
+            <a href="/carv-calc/" class="flex-item listed" style="display: none;">carv-calc</a>
+            <a href="/swell-calc/" class="flex-item listed" style="display: none;">swell-calc</a>
+            <a href="/taiko-s1/" class="flex-item listed" style="display: none;">taiko-s1</a>
+            <a href="/puffer-points/" class="flex-item listed" style="display: none;">puffer-points</a>
+        </div>
+
+        <!-- More Button -->
+        <button class="more-button">. . .</button>
     </div>
 
-    <div id="flexContainer" class="flex-container">
-        <a href="/scroll-predictor/" class="flex-item">scroll-predictor</a>
-        <a href="/catizen-predictor/" class="flex-item">catizen-predictor</a>
-        <a href="/meteora-points/" class="flex-item">meteora-points</a>
-        <a href="/usual-points-calc/" class="flex-item">usual-points-calc</a>
-        <a href="/hamster-predictor/" class="flex-item">hamster-predictor</a>
-        <a href="/apr-calculator/" class="flex-item">apr-calculator</a>
-        <a href="/eigen-predictor/" class="flex-item">eigen-predictor</a>
-        <a href="/linea-lxp/" class="flex-item">linea-lxp</a>
-        <a href="/carv-calc/" class="flex-item">carv-calc</a>
-        <a href="/swell-calc/" class="flex-item">swell-calc</a>
-        <a href="/taiko-s1/" class="flex-item">taiko-s1</a>
-        <a href="/puffer-points/" class="flex-item">puffer-points</a>
-    </div>
+    <footer>
+        <p>TomketLovers © 2024</p>
+        <div class="social-icons">
+            <a href="https://tomketlovers.com/" target="_blank">
+                <i class="fa-solid fa-globe" alt="Website"></i> 
+            </a>
+            <a href="https://discord.com/invite/RhknZEkX" target="_blank">
+                <i class="fab fa-discord" alt="Discord"></i> 
+            </a>
+            <a href="https://t.me/TomketOfficial" target="_blank">
+                <i class="fab fa-telegram" alt="Telegram"></i> 
+            </a>
+            <a href="https://x.com/TomketLovers" target="_blank">
+                <i class="fa-brands fa-twitter" alt="Twitter"></i> 
+            </a>
+        </div>
+    </footer>
 
-    <button id="loadMoreBtn" class="load-more-btn" onclick="loadMore()">Selanjutnya</button>
-</main>
+    <script>
+        let activeTab = 'live';
 
-<footer>
-    <div class="footer-links">
-        <p>Follow TomketLovers on:</p>
-        <ul>
-            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
-            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
-            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
-        </ul>
-    </div>
-</footer>
+        function switchTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.flex-item').forEach(item => {
+                if (item.classList.contains(tab)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
 
-<script>
-    // Fungsi untuk mencari item berdasarkan input pencarian
-    function filterItems() {
-        const searchInput = document.getElementById('searchInput').value.toLowerCase();
-        const items = document.querySelectorAll('.flex-item');
-        
-        items.forEach(item => {
-            if (item.textContent.toLowerCase().includes(searchInput)) {
-                item.style.display = "flex"; // Tampilkan item jika cocok
+            if (tab === 'live') {
+                document.querySelector('.tab-button:first-child').classList.add('active');
             } else {
-                item.style.display = "none"; // Sembunyikan item jika tidak cocok
+                document.querySelector('.tab-button:last-child').classList.add('active');
             }
-        });
-    }
-
-    let currentIndex = 6;
-    const itemsPerPage = 6;
-
-    function loadMore() {
-        const items = document.querySelectorAll('.flex-item');
-        for (let i = currentIndex; i < currentIndex + itemsPerPage && i < items.length; i++) {
-            items[i].style.display = "flex";
-        }
-        currentIndex += itemsPerPage;
-
-        if (currentIndex >= items.length) {
-            document.getElementById('loadMoreBtn').style.display = 'none';
-        }
-    }
-
-    // Sembunyikan semua item setelah yang ke-6 dan periksa apakah ada lebih dari 6 item
-    window.onload = () => {
-        const items = document.querySelectorAll('.flex-item');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-
-        // Sembunyikan semua item setelah yang ke-6
-        for (let i = itemsPerPage; i < items.length; i++) {
-            items[i].style.display = "none";
         }
 
-        // Tampilkan tombol "Selanjutnya" hanya jika jumlah item lebih dari 6
-        if (items.length > itemsPerPage) {
-            loadMoreBtn.style.display = 'block';
-        } else {
-            loadMoreBtn.style.display = 'none';
+        function searchAirdrop() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.flex-item').forEach(item => {
+                if (item.textContent.toLowerCase().includes(searchValue)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
-    };
-</script>
+
+        // Set the initial state for the tab
+        switchTab('live');
+    </script>
 
 </body>
 </html>

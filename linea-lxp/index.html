@@ -3,78 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linea LXP</title>
+    <title>Linea LXP Status Checker</title>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-FL42J6SMKN');
-</script>
+    gtag('config', 'G-FL42J6SMKN');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .container {
-            width: 80vw;
-            margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex-grow: 1;
+            margin-top: 10px;
+            text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
         }
 
-        h1 {
-            text-align: center;
-            color: #5f19c0;
-            font-size: 24px;
+        .container h1 {
+            margin-bottom: 10px;
+        }
+
+        header {
+            margin-left: 20vw;
+            margin-top: 10vh;
+        }
+
+        header a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: x-large;
+        }
+
+        header h2 {
+            margin-bottom: 10px;
+            font-size: larger;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
 
-        input {
-            width: calc(100% - 22px);
+        .search-bar input {
             padding: 10px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            width: 60%;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
         }
 
-        button {
-            width: 100%;
+        .search-button {
             padding: 10px;
-            background-color: #5f19c0;
-            color: white;
+            background-color: #ccc;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background-color: #0056b3;
         }
 
         .results {
-            width: 100%;
+            display: none; /* Sembunyikan elemen hasil secara default */
+            width: 62%;
+            margin-left: auto;
+            margin-right: auto;
             margin-top: 20px;
+            padding: 15px;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 16px;
+            color: black;
         }
 
-        .session {
+        .result-item {
             padding: 15px;
             background-color: #f4f4f4;
             border: 1px solid #ccc;
@@ -84,92 +108,76 @@
             color: #333;
         }
 
-        .result-item {
-            font-size: 18px;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            color: white;
-        }
-
         .green {
-            background-color: green;
+            background-color: #28a745;
+            color: white;
         }
 
         .red {
-            background-color: red;
+            background-color: #dc3545;
+            color: white;
         }
 
         footer {
-            background-color: #5f19c0;
-            color: white;
-            text-align: center;
-            padding: 20px;
             margin-top: auto;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .footer-links ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .footer-links ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-
-        .footer-links ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
-
-        .footer-links ul li a:hover {
-            color: #007bff;
-        }
-
-        header {
-            background-color: #5f19c0;
-            font-weight: bold;
-            color: white;
             padding: 20px;
+            background-color: #000;
+            color: #fff;
             text-align: center;
-            font-size: 24px;
-            border-radius: 5px;
-            flex-shrink: 0;
         }
 
-        header a {
-            color: white;
-            text-decoration: none;
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <header>
-        <a href="/">TomketLovers</a>
+        <a href="/">
+            <h1>TOMKETLOVERS</h1>
+            <h2>AIRDROP CHECKER</h2>
+        </a>
     </header>
 
     <div class="container">
-        <h1>Linea LXP</h1>
-        <input type="text" id="address" placeholder="Enter address" />
-        <button onclick="checkAPI()">Check Status</button>
+        <h1>Linea LXP Status</h1>
+        <div class="search-bar">
+            <input type="text" id="address" placeholder="Enter address" />
+            <button class="search-button" onclick="checkAPI()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
 
         <div class="results" id="results"></div>
     </div>
 
     <footer>
-        <div class="footer-links">
-          <p>Follow TomketLovers on:</p>
-          <ul>
-            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
-            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
-            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
-          </ul>
+        <p>TomketLovers © 2024</p>
+        <div class="social-icons">
+            <a href="https://tomketlovers.com/" target="_blank">
+                <i class="fa-solid fa-globe" alt="Website"></i> 
+            </a>
+            <a href="https://discord.com/invite/RhknZEkX" target="_blank">
+                <i class="fab fa-discord" alt="Discord"></i> 
+            </a>
+            <a href="https://t.me/TomketOfficial" target="_blank">
+                <i class="fab fa-telegram" alt="Telegram"></i> 
+            </a>
+            <a href="https://x.com/TomketLovers" target="_blank">
+                <i class="fa-brands fa-twitter" alt="Twitter"></i> 
+            </a>
         </div>
     </footer>
-
+    
     <script>
         function checkAPI() {
             const address = document.getElementById('address').value;
@@ -187,10 +195,12 @@
                         <div class="result-item ${isFlaggedClass}">isFlagged: ${data.isFlagged ? 'True' : 'False'}</div>
                         <div class="result-item ${lxpClass}">LXP: ${data.lxp}</div>
                     `;
+                    resultsDiv.style.display = "block"; // Tampilkan hasil setelah data diterima
                 })
                 .catch(error => {
                     console.error('Error fetching API:', error);
                     resultsDiv.innerHTML = '<div class="result-item red">Error fetching API</div>';
+                    resultsDiv.style.display = "block"; // Tampilkan pesan error
                 });
         }
     </script>

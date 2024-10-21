@@ -3,76 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="0; url=/hamster-predictor/">
     <title>Hamster Kombat Price Predictor</title>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-FL42J6SMKN');
-</script>
+    gtag('config', 'G-FL42J6SMKN');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .container {
-            width: 80vw;
-            margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex-grow: 1;
+            margin-top: 10px;
+            text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
         }
 
-        h1 {
-            text-align: center;
-            color: #5f19c0;
-            font-size: 24px;
+        .container h1 {
+            margin-bottom: 10px;
+        }
+
+        header {
+            margin-left: 20vw;
+            margin-top: 10vh;
+        }
+
+        header a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: x-large;
+        }
+
+        header h2 {
+            margin-bottom: 10px;
+            font-size: larger;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
 
-        input {
-            width: calc(100% - 22px);
+        .search-bar input {
             padding: 10px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            width: 60%;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
         }
 
-        button {
-            width: 100%;
+        .search-button {
             padding: 10px;
-            background-color: #5f19c0;
-            color: white;
+            background-color: #ccc;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background-color: #0056b3;
         }
 
         .results {
-            width: 100%;
-            margin-top: 20px;
+            display: none;
         }
 
         .session {
@@ -85,85 +97,122 @@
             color: #333;
         }
 
+        .more-button {
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: bolder;
+            padding: 10px 20px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+        }
+
         footer {
-            background-color: #5f19c0;
-            color: white;
-            text-align: center;
-            padding: 20px;
             margin-top: auto;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .footer-links ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .footer-links ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-
-        .footer-links ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
-
-        .footer-links ul li a:hover {
-            color: #007bff;
-        }
-
-        header {
-            background-color: #5f19c0;
-            font-weight: bold;
-            color: white;
             padding: 20px;
+            background-color: #000;
+            color: #fff;
             text-align: center;
-            font-size: 24px;
-            border-radius: 5px;
-            flex-shrink: 0; /* Prevent header from shrinking */
         }
 
-        header a {
-            color: white;
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .flex-item {
+            background-color: #ccc;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
             text-decoration: none;
+            color: black;
+        }
+
+        .results {
+            width: 62%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            display: none;
+            padding: 15px;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 16px;
+            color: black;
+        }
+
+        .results p, h3 {
+            margin-bottom: 5px; /* Adds spacing between elements */
         }
     </style>
 </head>
 <body>
     <header>
-        <a href="https://tomketloversid.github.io/">TomketLovers</a>
+        <a href="/">
+            <h1>TOMKETLOVERS</h1>
+            <h2>AIRDROP CHECKER</h2>
+        </a>
     </header>
+
     <div class="container">
         <h1>Hamster Kombat Price Predictor</h1>
-        <p>Prediksi harga token Hamster Kombat berdasarkan MCAP token DOGS, CATI dan Premarket</p>
-        <input type="number" id="tokenInput" placeholder="Masukkan jumlah token yang Anda miliki">
-        <button onclick="calculatePrice()">Hitung</button>
+        <p>Predict Hamster Kombat token price based on DOGS, CATI, and Premarket market caps</p><br>
+        <div class="search-bar">
+            <input type="number" id="tokenInput" placeholder="Enter the number of tokens you own">
+            <button class="search-button" onclick="calculatePrice()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
         <div class="results" id="results"></div>
     </div>
+
     <footer>
-        <div class="footer-links">
-        <p>Follow TomketLovers on:</p>
-        <ul>
-            <li><a href="https://tomketlovers.com/" target="_blank">Website</a></li>
-            <li><a href="https://x.com/TomketLovers" target="_blank">Twitter</a></li>
-            <li><a href="https://t.me/tomketloversreborn" target="_blank">Telegram</a></li>
-        </ul>
+        <p>TomketLovers © 2024</p>
+        <div class="social-icons">
+            <a href="https://tomketlovers.com/" target="_blank">
+                <i class="fa-solid fa-globe" alt="Website"></i> 
+            </a>
+            <a href="https://discord.com/invite/RhknZEkX" target="_blank">
+                <i class="fab fa-discord" alt="Discord"></i> 
+            </a>
+            <a href="https://t.me/TomketOfficial" target="_blank">
+                <i class="fab fa-telegram" alt="Telegram"></i> 
+            </a>
+            <a href="https://x.com/TomketLovers" target="_blank">
+                <i class="fa-brands fa-twitter" alt="Twitter"></i> 
+            </a>
         </div>
     </footer>
 
     <script>
-        // Total supply of Hamster Kombat token
         const totalSupply = 64375000000;
         const fdv = 100000000000;
 
-        // API URLs for getting market cap data from CoinPaprika and lastPrice
         const dogsCoinUrl = "https://api.coinpaprika.com/v1/tickers/dogs-dogs";
         const catiCoinUrl = "https://api.coinpaprika.com/v1/tickers/cati-catizen";
         const premarketUrl = "https://hamster-price-api.vercel.app/api/lastPrice";
 
-        // Function to get market cap for a specific coin
         async function getMarketCap(url) {
             try {
                 const response = await fetch(url);
@@ -171,82 +220,75 @@
                 return data.quotes.USD.market_cap;
             } catch (error) {
                 console.error(`Error fetching market cap:`, error);
-                return null;  // Return null if there is an error
+                return null;
             }
         }
 
-        // Function to get lastPrice from premarket API
         async function getPremarketPrice(url) {
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                return parseFloat(data.result.lastPrice);  // return lastPrice as float
+                return parseFloat(data.result.lastPrice);
             } catch (error) {
                 console.error(`Error fetching premarket price:`, error);
-                return null;  // Return null if there is an error
+                return null;
             }
         }
 
-        // Main function to calculate and display price predictions
         async function calculatePrice() {
             const tokensOwned = parseFloat(document.getElementById('tokenInput').value);
 
             if (!isNaN(tokensOwned)) {
-                // Fetch market cap for NOT, DOGS and premarket price
                 const mcapDogs = await getMarketCap(dogsCoinUrl);
                 const mcapCati = await getMarketCap(catiCoinUrl);
                 const lastPricePremarket = await getPremarketPrice(premarketUrl);
 
                 if (mcapDogs && mcapCati && lastPricePremarket) {
-                    // Calculate price per token and total value for both NOT and DOGS
-
                     const pricePerTokenDogs = mcapDogs / totalSupply;
                     const totalDollarsDogs = tokensOwned * pricePerTokenDogs;
 
                     const pricePerTokenCati = mcapCati / totalSupply;
                     const totalDollarsCati = tokensOwned * pricePerTokenCati;
 
-                    // Calculate total value using premarket lastPrice
                     const marketcapPremarket = lastPricePremarket * totalSupply / 10;
                     const totalDollarsPremarket = tokensOwned * lastPricePremarket / 10;
 
-                    // FDV
                     const dogsFdv = Math.round(pricePerTokenDogs * fdv);
                     const catiFdv = Math.round(pricePerTokenCati * fdv);
                     const premarketFdv = Math.round(lastPricePremarket * fdv / 10);
 
-                    const bagiPremarket = lastPricePremarket / 10 ;
+                    const bagiPremarket = lastPricePremarket / 10;
 
-                    // Display results
                     const resultsDiv = document.getElementById('results');
                     resultsDiv.innerHTML = `
                         <div class="session">
-                            <strong>Hasil berdasarkan MCAP DOGS</strong><br>
+                            <strong>Results based on DOGS MCAP</strong><br>
                             Market Cap DOGS = $${mcapDogs.toLocaleString()}<br>
                             FDV DOGS = $${dogsFdv.toLocaleString()}<br>
-                            Harga per token = $${pricePerTokenDogs.toFixed(4)}<br>
-                            Anda memiliki token senilai = $${totalDollarsDogs.toFixed(3)}
+                            Price per token = $${pricePerTokenDogs.toFixed(4)}<br>
+                            Your tokens are worth = $${totalDollarsDogs.toFixed(3)}
                         </div>
                         <div class="session">
-                            <strong>Hasil berdasarkan MCAP CATI</strong><br>
+                            <strong>Results based on CATI MCAP</strong><br>
                             Market Cap CATI = $${mcapCati.toLocaleString()}<br>
                             FDV CATI = $${catiFdv.toLocaleString()}<br>
-                            Harga per token = $${pricePerTokenCati.toFixed(4)}<br>
-                            Anda memiliki token senilai = $${totalDollarsCati.toFixed(3)}
+                            Price per token = $${pricePerTokenCati.toFixed(4)}<br>
+                            Your tokens are worth = $${totalDollarsCati.toFixed(3)}
                         </div>
                         <div class="session">
-                            <strong>Hasil berdasarkan Premarket</strong><br>
+                            <strong>Results based on Premarket</strong><br>
                             Market Cap Premarket = $${marketcapPremarket.toLocaleString()}<br>
                             FDV Premarket = $${premarketFdv.toLocaleString()}<br>
-                            Harga per token = $${bagiPremarket.toFixed(4)}<br>
-                            Anda memiliki token senilai = $${totalDollarsPremarket.toFixed(3)}
+                            Price per token = $${bagiPremarket.toFixed(4)}<br>
+                            Your tokens are worth = $${totalDollarsPremarket.toFixed(3)}
                         </div>
                     `;
+                    resultsDiv.style.display = "block";
                 } else {
-                    alert('Gagal mengambil data market cap atau premarket.');
+                    alert('Failed to retrieve market cap or premarket data.');
                 }
             } else {
-                alert('Masukkan nilai yang valid untuk token');
+                alert('Please enter a valid token amount.');
             }
         }
     </script>
