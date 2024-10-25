@@ -76,15 +76,10 @@
         }
 
         .input-button {
-            margin-left: auto;
-            margin-right: auto;
-            width: 60vw;
             padding: 10px;
             background-color: #ccc;
             border: none;
             cursor: pointer;
-            color: black;
-            font-weight: bold;
         }
 
         .results {
@@ -139,8 +134,8 @@
         <p>Check your wallet score across different epochs and tiers.</p>
         <div class="input-container">
             <input type="text" id="walletAddress" placeholder="Enter your wallet address">
+            <button class="input-button" onclick="getGrassScore()"><i class="fas fa-search"></i></button>
         </div>
-        <button class="input-button" onclick="getGrassScore()">Get Score</button>
         
         <div class="results" id="results"></div>
     </div>
