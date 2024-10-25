@@ -84,7 +84,7 @@
         }
 
         .results {
-            display: none; /* Sembunyikan elemen hasil secara default */
+            display: none;
             width: 62%;
             margin-left: auto;
             margin-right: auto;
@@ -183,25 +183,37 @@
             const address = document.getElementById('address').value;
             const resultsDiv = document.getElementById('results');
             
-            fetch(`https://lxp-ceker.vercel.app/api/?address=${address}`)
-                .then(response => response.json())
-                .then(data => {
-                    let pohClass = data.poh ? 'green' : 'red';
-                    let isFlaggedClass = !data.isFlagged ? 'green' : 'red';
-                    let lxpClass = data.lxp ? 'green' : 'red';
+            Promise.all([
+                fetch(`https://lxp-ceker.vercel.app/api/?address=${address}`).then(res => res.json()),
+                fetch(`https://linea-voyager-api.vercel.app/api/?address=${address}`).then(res => res.json())
+            ])
+            .then(([lxpData, checkData]) => {
+                let pohClass = lxpData.poh ? 'green' : 'red';
+                let isFlaggedClass = !lxpData.isFlagged ? 'green' : 'red';
+                let lxpClass = lxpData.lxp ? 'green' : 'red';
 
-                    resultsDiv.innerHTML = `
-                        <div class="result-item ${pohClass}">POH: ${data.poh ? 'True' : 'False'}</div>
-                        <div class="result-item ${isFlaggedClass}">isFlagged: ${data.isFlagged ? 'True' : 'False'}</div>
-                        <div class="result-item ${lxpClass}">LXP: ${data.lxp}</div>
-                    `;
-                    resultsDiv.style.display = "block"; // Tampilkan hasil setelah data diterima
-                })
-                .catch(error => {
-                    console.error('Error fetching API:', error);
-                    resultsDiv.innerHTML = '<div class="result-item red">Error fetching API</div>';
-                    resultsDiv.style.display = "block"; // Tampilkan pesan error
-                });
+                let checkResults = [];
+                const mapping = {1: 'Alpha', 2: 'Beta', 3: 'Gamma', 4: 'Delta', 5: 'Omega'};
+                for (const [key, value] of Object.entries(checkData)) {
+                    if (value) {
+                        checkResults.push(`<span class="result-item">${mapping[key]}</span>`);
+                    }
+                }
+
+                resultsDiv.innerHTML = `
+                    <div class="result-item ${pohClass}">POH: ${lxpData.poh ? 'True' : 'False'}</div>
+                    <div class="result-item ${isFlaggedClass}">isFlagged: ${lxpData.isFlagged ? 'True' : 'False'}</div>
+                    <div class="result-item ">LXP: ${lxpData.lxp}</div>
+                    <div class="result-item">Linea Voyager: ${checkResults.join('')}</div>
+                    
+                `;
+                resultsDiv.style.display = "block";
+            })
+            .catch(error => {
+                console.error('Error fetching API:', error);
+                resultsDiv.innerHTML = '<div class="result-item red">Error fetching API</div>';
+                resultsDiv.style.display = "block";
+            });
         }
     </script>
 </body>
