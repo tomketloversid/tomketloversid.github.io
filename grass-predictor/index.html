@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grass Predictor</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FL42J6SMKN');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            margin-left: 20vw;
+            margin-top: 10vh;
+        }
+
+        header a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: x-large;
+        }
+
+        header h2 {
+            margin-bottom: 10px;
+            font-size: large;
+        }
+
+        .container {
+            margin-top: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container h1, p {
+            margin-bottom: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 60%;
+            border: 1px solid #ccc;
+        }
+
+        .input-button {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60vw;
+            padding: 10px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+        }
+
+        .results {
+            width: 60%;
+            margin: 20px auto;
+            display: none;
+            padding: 15px;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 16px;
+            color: black;
+        }
+
+        .results p, h3 {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <h1>TOMKETLOVERS</h1>
+            <h2>AIRDROP CHECKER</h2>
+        </a>
+    </header>
+
+    <div class="container">
+        <h1>Grass Predictor</h1>
+        <p>Check your wallet score across different epochs and tiers.</p>
+        <div class="input-container">
+            <input type="text" id="walletAddress" placeholder="Enter your wallet address">
+        </div>
+        <button class="input-button" onclick="getGrassScore()">Get Score</button>
+        
+        <div class="results" id="results"></div>
+    </div>
+
+    <footer>
+        <p>TomketLovers © 2024</p>
+        <div class="social-icons">
+            <a href="https://tomketlovers.com/" target="_blank">
+                <i class="fa-solid fa-globe" alt="Website"></i> 
+            </a>
+            <a href="https://discord.com/invite/RhknZEkX" target="_blank">
+                <i class="fab fa-discord" alt="Discord"></i> 
+            </a>
+            <a href="https://t.me/TomketOfficial" target="_blank">
+                <i class="fab fa-telegram" alt="Telegram"></i> 
+            </a>
+            <a href="https://x.com/TomketLovers" target="_blank">
+                <i class="fa-brands fa-twitter" alt="Twitter"></i> 
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        async function getGrassScore() {
+            const walletAddress = document.getElementById('walletAddress').value;
+            const apiURL = `https://api.getgrass.io/zvTlZ8PRouKKGTGNzg4k?input=%7B%22walletAddress%22:%22${walletAddress}%22%7D`;
+            const initGrass = 250000000; // 250 million tokens for initial grass
+        
+            try {
+                // Fetch grass score data
+                const grassResponse = await fetch(apiURL);
+                const grassData = await grassResponse.json();
+                const resultData = grassData.result.data;
+        
+                let totalGrass = 0;
+                for (let key in resultData) {
+                    totalGrass += resultData[key]; // Accumulate the total
+                }
+        
+                // Fetch market cap for Render (RENDER) and IO (IO)
+                const renderMcapResponse = await fetch('https://api.coinpaprika.com/v1/tickers/render-render'); // Example endpoint for RENDER
+                const ioMcapResponse = await fetch('https://api.coinpaprika.com/v1/tickers/io-ionet'); // Example endpoint for IO
+        
+                const renderMcapData = await renderMcapResponse.json();
+                const ioMcapData = await ioMcapResponse.json();
+        
+                const renderMcap = renderMcapData.quotes.USD.market_cap; // Extract market cap in USD
+                const ioMcap = ioMcapData.quotes.USD.market_cap; // Extract market cap in USD
+        
+                // Calculate the price per Grass token based on the market caps
+                const renderPricePerGrass = renderMcap / initGrass;
+                const ioPricePerGrass = ioMcap / initGrass;
+        
+                // Define fixed premarket price (example: $1 per Grass token)
+                const premarketPrice = 1;
+        
+                // Calculate total price for each scenario
+                const premarketTotalPrice = totalGrass * premarketPrice;
+                const renderTotalPrice = totalGrass * renderPricePerGrass;
+                const ioTotalPrice = totalGrass * ioPricePerGrass;
+        
+                // Display results
+                document.getElementById('results').innerHTML = `
+                    <h3>Total GRASS: ${totalGrass.toFixed(2)}</h3>
+                    <h4>If Premarket</h4>
+                    <p>Harga Per Grass: $${premarketPrice}</p>
+                    <p>Total Harga: $${premarketTotalPrice.toFixed(2)}</p>
+                    <h4>If MCAP Render</h4>
+                    <p>Harga Per Grass: $${renderPricePerGrass.toFixed(2)}</p>
+                    <p>Total Harga: $${renderTotalPrice.toFixed(2)}</p>
+                    <h4>If MCAP IO</h4>
+                    <p>Harga Per Grass: $${ioPricePerGrass.toFixed(2)}</p>
+                    <p>Total Harga: $${ioTotalPrice.toFixed(2)}</p>
+                `;
+                document.getElementById('results').style.display = "block";
+            } catch (error) {
+                document.getElementById('results').innerHTML = "Error fetching data.";
+                document.getElementById('results').style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
