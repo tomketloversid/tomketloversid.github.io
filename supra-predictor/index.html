@@ -174,30 +174,38 @@
 
                 const pythPrice = pythData.quotes.USD.price;
                 const pythSupply = pythData.total_supply || 0;
-
                 if (pythSupply === 0) throw new Error("Invalid supply data.");
 
                 const pythFDV = pythPrice * pythSupply;
                 const supraPyth = pythFDV / supplySupra;
 
-                const fdv1b = 0.01;
-                const fdv500m = 0.005;
+                // Fetch data for Chainlink
+                const linkResponse = await fetch('https://api.coinpaprika.com/v1/tickers/link-chainlink');
+                const linkData = await linkResponse.json();
 
+                const linkPrice = linkData.quotes.USD.price;
+                const linkSupply = linkData.total_supply || 0;
+                if (linkSupply === 0) throw new Error("Invalid supply data.");
+
+                const linkFDV = linkPrice * linkSupply;
+                const supraLink = linkFDV / supplySupra;
+
+                const fdv1b = 0.01;
                 const fdv1bTotalPrice = amount * fdv1b;
-                const fdv500mTotalPrice = amount * fdv500m;
                 const pythTotalPrice = amount * supraPyth;
-                
+                const linkTotalPrice = amount * supraLink;
+
                 document.getElementById('results').innerHTML = `
                     <h3>Total SUPRA: ${parseFloat(amount).toFixed(0)}</h3>
-                    <h4>If FDV 500M</h4>
-                    <p>Price Per SUPRA: $${fdv500m}</p>
-                    <p>Total Price: $${fdv500mTotalPrice.toFixed(2)}</p>
                     <h4>If FDV 1B</h4>
                     <p>Price Per SUPRA: $${fdv1b}</p>
                     <p>Total Price: $${fdv1bTotalPrice.toFixed(2)}</p>
                     <h4>If FDV Pyth (4B)</h4>
                     <p>Price Per SUPRA: $${supraPyth.toFixed(2)}</p>
                     <p>Total Price: $${pythTotalPrice.toFixed(2)}</p>
+                    <h4>If FDV Chainlink</h4>
+                    <p>Price Per SUPRA (12B): $${supraLink.toFixed(2)}</p>
+                    <p>Total Price: $${linkTotalPrice.toFixed(2)}</p>
                 `;
                 document.getElementById('results').style.display = "block";
             } catch (error) {
