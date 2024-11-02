@@ -258,16 +258,12 @@
             const myPoints = parseFloat(data.totalPoints) / Math.pow(10, 18);
             const percentage = (myPoints / totalPills) * 100;
 
-            document.getElementById("pointsResult").textContent = `Points: ${myPoints.toFixed(0)}`;
-            document.getElementById("positionResult").textContent = `Leaderboard Position: ${data.leaderboardPosition}`;
+            document.getElementById("pointsResult").textContent = `Points: ${Math.round(myPoints).toLocaleString("id-ID")}`;
+            document.getElementById("positionResult").textContent = `Leaderboard Position: ${Number(data.leaderboardPosition).toLocaleString("id-ID")}`;
             document.getElementById("percentageResult").textContent = `Percentage: ${percentage.toFixed(5)}%`;
 
             const tokens = [
-                { name: 'maker', supply: 1005577 },
-                { name: 'curve', supply: 3303030299 },
-                { name: 'ena', supply: 15000000000 },
-                { name: 'tribe', supply: 1000000000 },
-                { name: 'fxs', supply: 99681495 }
+                { name: 'Supply 10B', supply: 10000000000 },
             ];
 
             const percentageIt = 7.5 / 100;
@@ -276,7 +272,10 @@
             tokens.forEach(token => {
                 const tokenUsual = token.supply * percentageIt;
                 const tokenUsualTotal = Math.round((percentage / 100) * tokenUsual);
-                tokenomicsResultsHTML += `<p>If ${token.name}: <strong>${tokenUsualTotal.toLocaleString()} $usual</strong></p>`;
+                const totalPrice = tokenUsualTotal * 0.1;
+                tokenomicsResultsHTML += `<p>If ${token.name}: <strong>${tokenUsualTotal.toLocaleString()} $usual</strong></p>
+                                          <p>If Price (1B FDV) : $0.1</p>
+                                          <p>Total Price: $${Math.round(totalPrice).toLocaleString("id-ID")}</p>`;
             });
 
             document.getElementById("tokenomicsResults").innerHTML = tokenomicsResultsHTML;
