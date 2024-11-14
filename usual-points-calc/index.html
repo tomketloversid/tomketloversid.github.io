@@ -272,9 +272,9 @@
             tokens.forEach(token => {
                 const tokenUsual = token.supply * percentageIt;
                 const tokenUsualTotal = Math.round((percentage / 100) * tokenUsual);
-                const totalPrice = tokenUsualTotal * 0.1;
+                const totalPrice = tokenUsualTotal * 0.25;
                 tokenomicsResultsHTML += `<p>If ${token.name}: <strong>${tokenUsualTotal.toLocaleString()} $usual</strong></p>
-                                          <p>If Price (1B FDV) : $0.1</p>
+                                          <p>If Price (1B FDV) : $0.25</p>
                                           <p>Total Price: $${Math.round(totalPrice).toLocaleString("id-ID")}</p>`;
             });
 
