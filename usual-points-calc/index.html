@@ -237,65 +237,89 @@
     </footer>
 
     <script>
-    async function calculatePoints() {
-        const walletAddress = document.getElementById("walletAddress").value.trim();
-        if (!walletAddress) {
-            alert("Please enter a valid wallet address.");
-            return;
+        async function calculatePoints() {
+            const walletAddress = document.getElementById("walletAddress").value.trim();
+            if (!walletAddress) {
+                alert("Please enter a valid wallet address.");
+                return;
+            }
+        
+            const apiUrl = `https://usual-api.vercel.app/api/points/${walletAddress}`;
+            const totalPills = await fetchTotalPills();
+        
+            if (!totalPills) {
+                alert("Error fetching total pills.");
+                return;
+            }
+        
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const myPoints = parseFloat(data.totalPoints) / Math.pow(10, 18);
+                const percentage = (myPoints / totalPills) * 100;
+        
+                document.getElementById("pointsResult").textContent = `Points: ${Math.round(myPoints).toLocaleString("id-ID")}`;
+                document.getElementById("positionResult").textContent = `Leaderboard Position: ${Number(data.leaderboardPosition).toLocaleString("id-ID")}`;
+                document.getElementById("percentageResult").textContent = `Percentage: ${percentage.toFixed(5)}%`;
+        
+                const tokens = [
+                    { name: 'Supply 4B', supply: 4000000000 },
+                ];
+        
+                const percentageIt = 7.5 / 100;
+                let tokenomicsResultsHTML = '';
+        
+                let tokenUsualTotal = 0;
+                tokens.forEach(token => {
+                    const tokenUsual = token.supply * percentageIt;
+                    tokenUsualTotal = Math.round((percentage / 100) * tokenUsual);
+                    const totalPrice = tokenUsualTotal * 0.25;
+        
+                    tokenomicsResultsHTML += `<p>${token.name}: <strong>${tokenUsualTotal.toLocaleString()} $usual</strong></p>
+                                              <p>Price (1B FDV) : $0.25</p>
+                                              <p>Total Price: $${Math.round(totalPrice).toLocaleString("id-ID")}</p>`;
+                });
+        
+                // Fetch premarket price and calculate new Total Price
+                const premarketData = await fetchPremarketPrice();
+                if (premarketData) {
+                    const { highest_buy_price } = premarketData;
+                    const premarketTotalPrice = tokenUsualTotal * highest_buy_price;
+        
+                    tokenomicsResultsHTML += `<h3>Premarket Price Calculation:</h3>
+                                              <p>Premarket Price: $${highest_buy_price.toFixed(2)}</p>
+                                              <p>Total Price with Premarket: $${premarketTotalPrice.toLocaleString("id-ID")}</p>`;
+                }
+        
+                document.getElementById("tokenomicsResults").innerHTML = tokenomicsResultsHTML;
+                document.getElementById("resultContainer").style.display = "block"; // Show results
+            } catch (error) {
+                console.error("Error fetching API:", error);
+                alert("Error occurred: " + error.message);
+            }
         }
-
-        const apiUrl = `https://usual-api.vercel.app/api/points/${walletAddress}`;
-        const totalPills = await fetchTotalPills();
-
-        if (!totalPills) {
-            alert("Error fetching total pills.");
-            return;
+        
+        async function fetchTotalPills() {
+            try {
+                const response = await fetch('https://usual-six.vercel.app/api/fetchDune');
+                const data = await response.json();
+                return data.totalPills;
+            } catch (error) {
+                console.error('Error fetching total pills:', error);
+                return null;
+            }
         }
-
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            const myPoints = parseFloat(data.totalPoints) / Math.pow(10, 18);
-            const percentage = (myPoints / totalPills) * 100;
-
-            document.getElementById("pointsResult").textContent = `Points: ${Math.round(myPoints).toLocaleString("id-ID")}`;
-            document.getElementById("positionResult").textContent = `Leaderboard Position: ${Number(data.leaderboardPosition).toLocaleString("id-ID")}`;
-            document.getElementById("percentageResult").textContent = `Percentage: ${percentage.toFixed(5)}%`;
-
-            const tokens = [
-                { name: 'Supply 4B', supply: 4000000000 },
-            ];
-
-            const percentageIt = 7.5 / 100;
-            let tokenomicsResultsHTML = '';
-
-            tokens.forEach(token => {
-                const tokenUsual = token.supply * percentageIt;
-                const tokenUsualTotal = Math.round((percentage / 100) * tokenUsual);
-                const totalPrice = tokenUsualTotal * 0.25;
-                tokenomicsResultsHTML += `<p>If ${token.name}: <strong>${tokenUsualTotal.toLocaleString()} $usual</strong></p>
-                                          <p>If Price (1B FDV) : $0.25</p>
-                                          <p>Total Price: $${Math.round(totalPrice).toLocaleString("id-ID")}</p>`;
-            });
-
-            document.getElementById("tokenomicsResults").innerHTML = tokenomicsResultsHTML;
-            document.getElementById("resultContainer").style.display = "block"; // Show results
-        } catch (error) {
-            console.error("Error fetching API:", error);
-            alert("Error occurred: " + error.message);
+        
+        async function fetchPremarketPrice() {
+            try {
+                const response = await fetch('https://usual-api-wqkh.vercel.app/api');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching premarket price:', error);
+                return null;
+            }
         }
-    }
-
-    async function fetchTotalPills() {
-        try {
-            const response = await fetch('https://usual-six.vercel.app/api/fetchDune');
-            const data = await response.json();
-            return data.totalPills;
-        } catch (error) {
-            console.error('Error fetching total pills:', error);
-            return null;
-        }
-    }
-    </script>
+        </script>
 </body>
 </html>
