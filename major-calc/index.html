@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Major Calc</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FL42J6SMKN');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            margin-left: 20vw;
+            margin-top: 10vh;
+        }
+
+        header a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: x-large;
+        }
+
+        header h2 {
+            margin-bottom: 10px;
+            font-size: large;
+        }
+
+        .container {
+            margin-top: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container h1 {
+            margin-bottom: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 60%;
+            border: 1px solid #ccc;
+        }
+
+        .input-button {
+            padding: 10px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+        }
+
+        .results {
+            width: 60%;
+            margin: 20px auto;
+            display: none;
+            padding: 15px;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 16px;
+            color: black;
+        }
+
+        .results h3 {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <h1>TOMKETLOVERS</h1>
+            <h2>AIRDROP CHECKER</h2>
+        </a>
+    </header>
+
+    <div class="container">
+        <h1>Major Calc</h1>
+        <div class="input-container">
+            <input type="number" id="major-points" placeholder="Enter your Major Points">
+            <button class="input-button" onclick="convertMajorPoints()"><i class="fas fa-calculator"></i></button>
+        </div>
+        
+        <div class="results" id="results"></div>
+    </div>
+
+    <footer>
+        <p>TomketLovers © 2024</p>
+        <div class="social-icons">
+            <a href="https://tomketlovers.com/" target="_blank">
+                <i class="fa-solid fa-globe"></i> 
+            </a>
+            <a href="https://discord.com/invite/RhknZEkX" target="_blank">
+                <i class="fab fa-discord"></i> 
+            </a>
+            <a href="https://t.me/TomketOfficial" target="_blank">
+                <i class="fab fa-telegram"></i> 
+            </a>
+            <a href="https://x.com/TomketLovers" target="_blank">
+                <i class="fa-brands fa-twitter"></i> 
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        async function convertMajorPoints() {
+            const points = document.getElementById('major-points').value;
+            const conversionRate = 100; // 100 points = 1 token
+            const supplyMajorToken = 100000000; // 100 million tokens
+
+            if (!points || points <= 0) {
+                alert('Please enter a valid number of Major Points.');
+                return;
+            }
+
+            const majorTokens = points / conversionRate;
+
+            try {
+                // Fetch data for Catizen
+                const catResponse = await fetch('https://api.coinpaprika.com/v1/tickers/cati-catizen');
+                const catData = await catResponse.json();
+
+                const catPrice = catData.quotes.USD.price;
+                const catSupply = catData.total_supply || 0;
+                const catFDV = catPrice * 1000000000;
+                const supraCat = catFDV / supplyMajorToken;
+
+                // Fetch data for DogsDogs
+                const dogsResponse = await fetch('https://api.coinpaprika.com/v1/tickers/not-notcoin');
+                const dogsData = await dogsResponse.json();
+
+                const dogsPrice = dogsData.quotes.USD.price;
+                const dogsSupply = dogsData.total_supply || 0;
+                const dogsFDV = dogsPrice * dogsSupply;
+                const supraDogs = dogsFDV / supplyMajorToken;
+
+                document.getElementById('results').innerHTML = `
+                    <h3>Conversion Result:</h3>
+                    <p>Total Major Points: ${parseFloat(points).toFixed(0)}</p>
+                    <p>Total Major Tokens: ${majorTokens.toFixed(0)}</p>
+                    <br>
+                    <h4>Prediction Based on Catizen:</h4>
+                    <p>Price Per Major Token: $${supraCat.toFixed(3)}</p>
+                    <p>FDV Catizen: $${Math.round(catFDV).toLocaleString("id-ID")}</p>
+                    <p>Total Price: $${majorTokens * supraCat.toFixed(3)}</p>
+                    <br>
+                    <h4>Prediction Based on Dogs:</h4>
+                    <p>Price Per Major Token: $${supraDogs.toFixed(3)}</p>
+                    <p>FDV Dogs: $${Math.round(dogsFDV).toLocaleString("id-ID")}</p>
+                    <p>Total Price: $${majorTokens * supraDogs.toFixed(3)}</p>
+                `;
+                document.getElementById('results').style.display = "block";
+            } catch (error) {
+                document.getElementById('results').innerHTML = "Error fetching data.";
+                document.getElementById('results').style.display = "block";
+            }
+        }
+    </script>
+    
+</body>
+</html>
