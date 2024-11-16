@@ -283,7 +283,7 @@
                 const ethenaTotalPrice = tokenUsualTotal * ethenaPrice;
                 tokenomicsResultsHTML += `</br>
                                             <p>Price Ethena (8B FDV): $${ethenaPrice}</p>
-                                          <p>Total Price: $${ethenaTotalPrice.toLocaleString("id-ID")}</p>`;
+                                          <p>Total Price: $${Math.round(ethenaTotalPrice).toLocaleString("id-ID")}</p>`;
 
                 document.getElementById("tokenomicsResults").innerHTML = tokenomicsResultsHTML;
                 document.getElementById("resultContainer").style.display = "block";
