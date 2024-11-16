@@ -263,10 +263,10 @@
                     tokenUsualTotal = Math.round((percentage / 100) * tokenUsual);
                     const totalPrice = tokenUsualTotal * 0.25;
 
-                    tokenomicsResultsHTML += `<p>Token (possibility): <strong>${tokenUsualTotal.toLocaleString()} $usual</strong></p>
+                    tokenomicsResultsHTML += `<p>Token (possibility): <strong>${tokenUsualTotal.toLocaleString()} $USUAL</strong></p>
                                               </br>
                                               <p>Price (1B FDV) : $0.25</p>
-                                              <p>Total Price: $${totalPrice.toLocaleString("id-ID", { minimumFractionDigits: 2 })}</p>`;
+                                              <p>Total Price: $${Math.round(totalPrice).toLocaleString("id-ID")}</p>`;
                 });
 
                 const premarketData = await fetchPremarketPrice();
@@ -276,14 +276,14 @@
 
                     tokenomicsResultsHTML += `</br>
                                               <p>Premarket Price: $${highest_buy_price.toFixed(2)}</p>
-                                              <p>Total Price with Premarket: $${premarketTotalPrice.toLocaleString("id-ID", { minimumFractionDigits: 2 })}</p>`;
+                                              <p>Total Price with Premarket: $${Math.round(premarketTotalPrice).toLocaleString("id-ID")}</p>`;
                 }
 
                 const ethenaPrice = 2; // Example Ethena price per token
                 const ethenaTotalPrice = tokenUsualTotal * ethenaPrice;
                 tokenomicsResultsHTML += `</br>
                                             <p>Price Ethena (8B FDV): $${ethenaPrice}</p>
-                                          <p>Total Price: $${ethenaTotalPrice.toLocaleString("id-ID", { minimumFractionDigits: 2 })}</p>`;
+                                          <p>Total Price: $${ethenaTotalPrice.toLocaleString("id-ID")}</p>`;
 
                 document.getElementById("tokenomicsResults").innerHTML = tokenomicsResultsHTML;
                 document.getElementById("resultContainer").style.display = "block";
