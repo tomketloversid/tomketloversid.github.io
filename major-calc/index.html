@@ -132,7 +132,7 @@
     <div class="container">
         <h1>Major Calc</h1>
         <div class="input-container">
-            <input type="number" id="major-points" placeholder="Enter your Major Points">
+            <input type="number" id="major-points" placeholder="Enter your Major">
             <button class="input-button" onclick="convertMajorPoints()"><i class="fas fa-calculator"></i></button>
         </div>
         
@@ -160,11 +160,11 @@
     <script>
         async function convertMajorPoints() {
             const points = document.getElementById('major-points').value;
-            const conversionRate = 100; // 100 points = 1 token
+            const conversionRate = 1; // 100 points = 1 token
             const supplyMajorToken = 100000000; // 100 million tokens
 
             if (!points || points <= 0) {
-                alert('Please enter a valid number of Major Points.');
+                alert('Please enter a valid number of Major.');
                 return;
             }
 
@@ -190,9 +190,7 @@
                 const supraDogs = dogsFDV / supplyMajorToken;
 
                 document.getElementById('results').innerHTML = `
-                    <h3>Conversion Result:</h3>
-                    <p>Total Major Points: ${parseFloat(points).toFixed(0)}</p>
-                    <p>Total Major Tokens: ${majorTokens.toFixed(0)}</p>
+                    <b><p>Your Major: ${majorTokens.toFixed(0)}</p></b>
                     <br>
                     <h4>Prediction Based on Catizen:</h4>
                     <p>Price Per Major Token: $${supraCat.toFixed(3)}</p>
