@@ -243,10 +243,10 @@
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                const myPoints = parseFloat(data.totalPoints) / Math.pow(10, 18);
+                const myPoints = parseFloat(data.rawTotalPoints) / Math.pow(10, 18);
                 const percentage = (myPoints / totalPills) * 100;
 
-                document.getElementById("pointsResult").textContent = `Points: ${Math.round(myPoints).toLocaleString("id-ID")}`;
+                document.getElementById("pointsResult").textContent = `Points (Without Multiplier): ${Math.round(myPoints).toLocaleString("id-ID")}`;
                 document.getElementById("positionResult").textContent = `Leaderboard Position: ${Number(data.leaderboardPosition).toLocaleString("id-ID")}`;
                 document.getElementById("percentageResult").textContent = `Percentage: ${percentage.toFixed(5)}%`;
 
@@ -254,7 +254,7 @@
                     { name: 'Supply 4B', supply: 4000000000 },
                 ];
 
-                const percentageIt = 7.5 / 100;
+                const percentageIt = 8.5 / 100;
                 let tokenomicsResultsHTML = '';
 
                 let tokenUsualTotal = 0;
