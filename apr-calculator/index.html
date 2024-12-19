@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APR Calculator</title>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL42J6SMKN"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-FL42J6SMKN');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FL42J6SMKN');
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -65,15 +63,25 @@
 
         .input-container {
             display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 60%;
+            margin: 0 auto 20px auto;
+        }
+
+        .input-container label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 20px;
         }
 
         .input-container input {
             padding: 10px;
             font-size: 16px;
-            width: 60%;
+            width: 100%;
             border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
         }
 
         .input-button {
@@ -81,7 +89,7 @@
             margin-right: auto;
             width: 60vw;
             padding: 10px;
-            background-color: #ccc;  ;
+            background-color: #ccc;
             border: none;
             cursor: pointer;
             color: black;
@@ -139,13 +147,16 @@
         <h1>APR Calculator</h1>
         <p>Calculate the total amount of your loan and interest based on the APR percentage.</p>
         <div class="input-container">
-            <input type="number" id="principal" placeholder="Enter your margin">
+            <label for="principal">Margin</label>
+            <input type="text" id="principal" placeholder="Enter your margin">
         </div>
         <div class="input-container">
+            <label for="days">Days</label>
             <input type="number" id="days" placeholder="Enter duration in days">
         </div>
         <div class="input-container">
-            <input type="number" id="apr" placeholder="Enter APR percentage">
+            <label for="apr">APR</label>
+            <input type="text" id="apr" placeholder="Enter APR percentage">
         </div>
         <button class="input-button" onclick="calculateAPR()">Calculate</button>
         
@@ -171,10 +182,26 @@
     </footer>
 
     <script>
+        function formatNumber(value) {
+            return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function parseNumber(value) {
+            return parseFloat(value.replace(/,/g, ""));
+        }
+
+        document.getElementById('principal').addEventListener('input', function () {
+            this.value = formatNumber(this.value);
+        });
+
+        document.getElementById('apr').addEventListener('input', function () {
+            this.value = formatNumber(this.value);
+        });
+
         function calculateAPR() {
-            const principal = parseFloat(document.getElementById('principal').value);
+            const principal = parseNumber(document.getElementById('principal').value);
             const days = parseInt(document.getElementById('days').value);
-            const apr = parseFloat(document.getElementById('apr').value);
+            const apr = parseNumber(document.getElementById('apr').value);
 
             if (isNaN(principal) || isNaN(days) || isNaN(apr)) {
                 document.getElementById('results').innerHTML = "Please fill in all fields correctly.";
@@ -190,7 +217,7 @@
                 <p><b>Interest Earned:</b> $${interest.toFixed(2)}</p>
                 <p><b>Total Amount after ${days} days:</b> $${total.toFixed(2)}</p>
             `;
-            document.getElementById('results').style.display = "block"; // Show results
+            document.getElementById('results').style.display = "block";
         }
     </script>
 </body>
